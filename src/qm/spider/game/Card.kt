@@ -12,10 +12,12 @@ abstract class Card {
 
 data class RealCard(override val suit: Suit, override val value: Value) : Card() {
     override fun followedByOutsideSuit(otherCard: Card): Boolean {
+        if (otherCard is EmptyCard) return true
         return otherCard is RealCard && this.value.isFollowedBy(otherCard.value)
     }
 
     override fun followedByWithinSuit(otherCard: Card): Boolean {
+        if (otherCard is EmptyCard) return true
         return otherCard is RealCard && this.suit == otherCard.suit && this.value.isFollowedBy(otherCard.value)
     }
 
@@ -53,7 +55,7 @@ enum class Value {
     };
 
     fun isFollowedBy(other: Value): Boolean {
-        return other != KING && this.ordinal == other.ordinal + 1
+        return this != KING && this.ordinal + 1 == other.ordinal
     }
 }
 
