@@ -5,6 +5,7 @@ class Game(val columns: List<Column>, val stack: Stack) {
     fun getPossibleMoves(): MutableList<ColumnMove> {
         val result = mutableListOf<ColumnMove>()
         for (fromColumn in 0 until columns.size) {
+            var fullMove = true
             for ((candidateCard, candidateIndex) in columns[fromColumn].movableCards()) {
                 for (toColumn in 0 until columns.size) {
                     if (toColumn != fromColumn) {
@@ -13,14 +14,16 @@ class Game(val columns: List<Column>, val stack: Stack) {
                                 ColumnMove(
                                     fromColumn, candidateIndex, toColumn, columns[toColumn].nextFree(),
                                     columns[toColumn].topCard().isSameSuit(candidateCard),
-                                    candidateCard.value.ordinal)
+                                    candidateCard.value.ordinal,
+                                    fullMove)
                             )
                         }
                     }
                 }
+                fullMove = false
             }
         }
-        result.sortWith(compareBy(ColumnMove::sameSuit, ColumnMove::value))
+        result.sortWith(compareBy(ColumnMove::fullMove, ColumnMove::sameSuit, ColumnMove::value))
         result.reverse()
         return result
     }
@@ -51,11 +54,12 @@ class Game(val columns: List<Column>, val stack: Stack) {
 
 class Column() {
     private val stack = mutableListOf<Card>()
-    private var visibleFrom: Int = stack.size - 1
+    private var visibleFrom: Int = topCardIndex()
 
-    fun deal(cards: List<Card>) {
+    fun deal(cards: List<Card>): Column {
         stack.addAll(cards)
-        visibleFrom = stack.size - 1
+        visibleFrom = topCardIndex()
+        return this
     }
 
     fun add(cards: List<Card>) {
@@ -72,7 +76,7 @@ class Column() {
         if (topCard().value != Value.ACE)
             return false
         else {
-            var thisCard = stack.size - 1
+            var thisCard = topCardIndex()
             while (thisCard - 1 >= 0 && thisCard-1 >= visibleFrom && stack[thisCard-1].followedByWithinSuit(stack[thisCard])) {
                 if (stack[thisCard - 1].value == Value.KING) return true
                 thisCard -= 1
@@ -81,14 +85,15 @@ class Column() {
         }
     }
 
-    fun revealTopCard() {
+    private fun revealTopCard() {
+        if (visibleFrom == 1) return
         if (visibleFrom >= stack.size)
-            visibleFrom = stack.size - 1
+            visibleFrom = topCardIndex()
     }
 
     override fun toString(): String {
         var result = String()
-        for (index in 0 until stack.size) {
+        for (index in 1 until stack.size) {
             if (index < visibleFrom)
                 result += "X "
             else
@@ -99,22 +104,24 @@ class Column() {
 
     fun movableCards(): MutableList<Pair<Card, Int>> {
         val result = mutableListOf<Pair<Card, Int>>()
-        if (stack.size > 0)
+        if (stack.size > 1)
             for (index in longestSuit())
                 result.add(Pair(stack[index], index))
         return result
     }
 
     private fun longestSuit(): IntRange {
-        val end = stack.size-1
+        val end = topCardIndex()
         var begin = end
         while (begin-1 >= visibleFrom && stack[begin].followedByWithinSuit(stack[begin-1]))
             begin -= 1
         return IntRange(begin, end)
     }
 
+    private fun topCardIndex() = stack.size - 1
+
     fun canAccept(candidateCard: Card): Boolean {
-        return stack.isEmpty() || topCard().followedByOutsideSuit(candidateCard)
+        return candidateCard.followedByOutsideSuit(topCard())
     }
 
     fun topCard() = stack.last()
@@ -141,10 +148,11 @@ data class ColumnMove(
     val toColumn: Int,
     val toIndex: Int,
     val sameSuit: Boolean,
-    val value: Int
+    val value: Int,
+    val fullMove: Boolean
 ) : Move() {
     override fun toString(): String {
-        return "($fromColumn,$fromIndex -> $toColumn,$toIndex; $sameSuit; ${Value.values()[value]})"
+        return "($fromColumn,$fromIndex -> $toColumn,$toIndex; $sameSuit; ${Value.values()[value]}; $fullMove)"
     }
 }
 object DealMove : Move()
