@@ -37,6 +37,8 @@ object EmptyCard : Card() {
     override fun isSameSuit(otherCard: Card) = true
 
     override fun followedByOutsideSuit(otherCard: Card) = true
+
+    override fun toString() = "-"
 }
 
 enum class Value {
@@ -51,7 +53,7 @@ enum class Value {
     };
 
     fun isFollowedBy(other: Value): Boolean {
-        return this != KING && this.ordinal == other.ordinal + 1
+        return other != KING && this.ordinal == other.ordinal + 1
     }
 }
 

@@ -81,14 +81,15 @@ class Column() {
         }
     }
 
-    fun revealTopCard() {
+    private fun revealTopCard() {
+        if (visibleFrom == 1) return
         if (visibleFrom >= stack.size)
             visibleFrom = stack.size - 1
     }
 
     override fun toString(): String {
         var result = String()
-        for (index in 0 until stack.size) {
+        for (index in 1 until stack.size) {
             if (index < visibleFrom)
                 result += "X "
             else
