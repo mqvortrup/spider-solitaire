@@ -16,13 +16,13 @@ fun main(args: Array<String>) {
         val input = readLine()
         if (input != "" && (input?.get(0) == 'D' || input?.get(0) == 'd'))
             game.deal()
-        else if (input != "" && (input?.get(0) == 'U' || input?.get(0) == 'u'))
+        else if (input != "" && (input?.get(0) == 'U' || input?.get(0) == 'u')) {
             if (lastMove != null) {
                 println("Undoing $lastMove")
                 game.undoMove(lastMove)
-            }
-            else
+            } else
                 println("nothing to undo")
+        }
         else {
             val moveIndex = if (input == "") 0 else input!!.toInt()
             lastMove = possibleMoves[moveIndex]
