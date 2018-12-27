@@ -29,7 +29,17 @@ class Game(val columns: List<Column>, val stack: Stack) {
     }
 
     fun executeMove(move: Move) = when(move) {
-        is ColumnMove -> columns[move.fromColumn].moveTo(move.fromIndex, columns[move.toColumn])
+        is ColumnMove -> move.result = columns[move.fromColumn].moveTo(move.fromIndex, columns[move.toColumn])
+        is DealMove -> noop()
+        is NoValidMove -> noop()
+    }
+
+    fun undoMove(move: Move) = when(move) {
+        is ColumnMove -> {
+            if (move.result.cardRevealed)
+                columns[move.fromColumn].hideTopCard()
+            columns[move.toColumn].moveTo(move.toIndex, columns[move.fromColumn])
+        }
         is DealMove -> noop()
         is NoValidMove -> noop()
     }
@@ -85,10 +95,13 @@ class Column() {
         }
     }
 
-    private fun revealTopCard() {
-        if (visibleFrom == 1) return
-        if (visibleFrom >= stack.size)
+    private fun revealTopCard(): Boolean {
+        if (visibleFrom == 1) return false
+        if (visibleFrom >= stack.size) {
             visibleFrom = topCardIndex()
+            return true
+        } else
+            return false
     }
 
     override fun toString(): String {
@@ -127,19 +140,22 @@ class Column() {
     fun topCard() = stack.last()
 
     fun nextFree(): Int {
-        return visibleFrom + 1
+        return stack.size
     }
 
-    fun moveTo(fromIndex: Int, toColumn: Column) {
+    fun moveTo(fromIndex: Int, toColumn: Column): MoveResult {
         val toMove = stack.takeLastFrom(fromIndex)
-        resetVisible()
+        val revealed = revealTopCard()
         toColumn.add(toMove)
+        return MoveResult(revealed, false)
     }
 
-    private fun resetVisible() {
-        if (visibleFrom >= stack.size) revealTopCard()
+    fun hideTopCard() {
+        visibleFrom += 1
     }
 }
+
+data class MoveResult(val cardRevealed: Boolean, val suitMoved: Boolean)
 
 sealed class Move
 data class ColumnMove(
@@ -151,6 +167,7 @@ data class ColumnMove(
     val value: Int,
     val fullMove: Boolean
 ) : Move() {
+    var result: MoveResult = MoveResult(false, false)
     override fun toString(): String {
         return "($fromColumn,$fromIndex -> $toColumn,$toIndex; $sameSuit; ${Value.values()[value]}; $fullMove)"
     }
