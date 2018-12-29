@@ -1,6 +1,6 @@
 package qm.spider.game
 
-class Game(val columns: List<Column>, val stack: Stack) {
+class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
 
     fun getPossibleMoves(): MutableList<ColumnMove> {
         val result = mutableListOf<ColumnMove>()
@@ -29,7 +29,13 @@ class Game(val columns: List<Column>, val stack: Stack) {
     }
 
     fun executeMove(move: Move) = when(move) {
-        is ColumnMove -> move.result = columns[move.fromColumn].moveTo(move.fromIndex, columns[move.toColumn])
+        is ColumnMove -> {
+            move.result = moveTo(columns[move.fromColumn], move.fromIndex, columns[move.toColumn])
+            if (move.result.suitRemoved) {
+                val fullSuit = columns[move.toColumn].removeFullSuit()
+                discards.addAll(fullSuit)
+            } else noop()
+        }
         is DealMove -> noop()
         is NoValidMove -> noop()
     }
@@ -38,11 +44,23 @@ class Game(val columns: List<Column>, val stack: Stack) {
         is ColumnMove -> {
             if (move.result.cardRevealed)
                 columns[move.fromColumn].hideTopCard()
-            columns[move.toColumn].moveTo(move.toIndex, columns[move.fromColumn])
+            if (move.result.suitRemoved) {
+                val fullSuit = discards.takeLastCount(13)
+                columns[move.toColumn].add(fullSuit)
+            }
+            moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
         is DealMove -> noop()
         is NoValidMove -> noop()
     }
+
+    fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {
+        val toMove = fromColumn.takeLastFrom(fromIndex)
+        val revealed = fromColumn.revealTopCard()
+        val fullSuitVisible = toColumn.add(toMove)
+        return MoveResult(revealed, fullSuitVisible)
+    }
+
 
     fun deal() {
         for (index in 0 until columns.size) {
@@ -72,14 +90,15 @@ class Column() {
         return this
     }
 
-    fun add(cards: List<Card>) {
+    fun add(cards: List<Card>): Boolean {
         stack.addAll(cards)
-        if (isFullSuitVisible()) removeFullSuit()
+        return isFullSuitVisible()
     }
 
-    private fun removeFullSuit() {
-        stack.takeLastCount(13)
+    fun removeFullSuit(): Stack {
+        val suit = stack.takeLastCount(13)
         revealTopCard()
+        return suit
     }
 
     private fun isFullSuitVisible(): Boolean {
@@ -87,15 +106,18 @@ class Column() {
             return false
         else {
             var thisCard = topCardIndex()
-            while (thisCard - 1 >= 0 && thisCard-1 >= visibleFrom && stack[thisCard-1].followedByWithinSuit(stack[thisCard])) {
-                if (stack[thisCard - 1].value == Value.KING) return true
+            while (visibleCardFollowsInSuit(thisCard)) {
+                if (stack[thisCard-1].value == Value.KING) return true
                 thisCard -= 1
             }
             return false
         }
     }
 
-    private fun revealTopCard(): Boolean {
+    private fun visibleCardFollowsInSuit(thisCard: Int) =
+        thisCard - 1 >= 0 && thisCard - 1 >= visibleFrom && stack[thisCard].followedByWithinSuit(stack[thisCard - 1])
+
+    fun revealTopCard(): Boolean {
         if (visibleFrom == 1) return false
         if (visibleFrom >= stack.size) {
             visibleFrom = topCardIndex()
@@ -131,7 +153,7 @@ class Column() {
         return IntRange(begin, end)
     }
 
-    private fun topCardIndex() = stack.size - 1
+    fun topCardIndex() = stack.size - 1
 
     fun canAccept(candidateCard: Card): Boolean {
         return candidateCard.followedByOutsideSuit(topCard())
@@ -143,19 +165,16 @@ class Column() {
         return stack.size
     }
 
-    fun moveTo(fromIndex: Int, toColumn: Column): MoveResult {
-        val toMove = stack.takeLastFrom(fromIndex)
-        val revealed = revealTopCard()
-        toColumn.add(toMove)
-        return MoveResult(revealed, false)
-    }
-
     fun hideTopCard() {
         visibleFrom += 1
     }
+
+    fun takeLastFrom(fromIndex: Int): List<Card> {
+        return stack.takeLastFrom(fromIndex)
+    }
 }
 
-data class MoveResult(val cardRevealed: Boolean, val suitMoved: Boolean)
+data class MoveResult(val cardRevealed: Boolean, val suitRemoved: Boolean)
 
 sealed class Move
 data class ColumnMove(
@@ -205,6 +224,6 @@ object Spider {
                 initiallyFillColumn(5, deck)
             }
         }
-        return Game(columns, deck)
+        return Game(columns, deck, mutableListOf())
     }
 }
