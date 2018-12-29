@@ -23,7 +23,13 @@ class Solver(val game: Game) {
 
     private fun doMove(): Boolean {
         countMoves ++
-        if (moveStack.hasNextMove()) {
+        val (restartAt, previous) = moveStack.cycleAt()
+        if (restartAt != null) {
+            println("cycle detected")
+            previous?.parent = null
+            moveStack = restartAt
+            return true
+        } else if (moveStack.hasNextMove()) {
             game.executeMove(moveStack.getNextMove())
             moveStack = MoveStack(moveStack, game.getPossibleMoves())
             return true
@@ -39,7 +45,7 @@ class Solver(val game: Game) {
     }
 }
 
-open class MoveStack(val parent: MoveStack? = null, val possibleMoves: MutableList<Move> = mutableListOf()) {
+class MoveStack(var parent: MoveStack? = null, private val possibleMoves: MutableList<Move> = mutableListOf()) {
     private var currentMove = 0
 
 
@@ -48,9 +54,18 @@ open class MoveStack(val parent: MoveStack? = null, val possibleMoves: MutableLi
     }
 
     fun hasNextMove(): Boolean {
-        return (currentMove < possibleMoves.size) && possibleMoves[currentMove+1].fullMove
+        return (currentMove < possibleMoves.size - 1) && possibleMoves[currentMove+1].fullMove
     }
 
+    fun cycleAt(): Pair<MoveStack?, MoveStack?> {
+        var checkAgainst = parent
+        var previous: MoveStack? = this
+        while (checkAgainst != null && this.possibleMoves != checkAgainst.possibleMoves) {
+            previous = checkAgainst
+            checkAgainst = checkAgainst.parent
+        }
+        return Pair(checkAgainst, previous)
+    }
 }
 
 fun main(args: Array<String>) {
