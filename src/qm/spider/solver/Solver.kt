@@ -1,9 +1,6 @@
 package qm.spider.solver
 
-import qm.spider.game.ColumnMove
-import qm.spider.game.Game
-import qm.spider.game.Move
-import qm.spider.game.Spider
+import qm.spider.game.*
 
 class Solver(val game: Game) {
 
@@ -14,8 +11,10 @@ class Solver(val game: Game) {
         initializeWithFirstMoves()
         println(game)
         while (doMove()) {
-            println(game)
+            //println(game)
+            println(countMoves)
         }
+        println(game)
     }
 
     private fun initializeWithFirstMoves() {
@@ -26,6 +25,13 @@ class Solver(val game: Game) {
         countMoves ++
         if (moveStack.hasNextMove()) {
             game.executeMove(moveStack.getNextMove())
+            moveStack = MoveStack(moveStack, game.getPossibleMoves())
+            return true
+        } else if (game.stackHasMoreCards()) {
+            println("Dealing")
+            moveStack = MoveStack(moveStack, mutableListOf(DealMove))
+            game.executeMove(moveStack.getNextMove())
+            moveStack = MoveStack(moveStack, game.getPossibleMoves())
             return true
         }
         else
@@ -33,7 +39,7 @@ class Solver(val game: Game) {
     }
 }
 
-open class MoveStack(val parent: MoveStack? = null, val possibleMoves: MutableList<ColumnMove> = mutableListOf()) {
+open class MoveStack(val parent: MoveStack? = null, val possibleMoves: MutableList<Move> = mutableListOf()) {
     private var currentMove = 0
 
 
@@ -42,7 +48,7 @@ open class MoveStack(val parent: MoveStack? = null, val possibleMoves: MutableLi
     }
 
     fun hasNextMove(): Boolean {
-        return currentMove < possibleMoves.size
+        return (currentMove < possibleMoves.size) && possibleMoves[currentMove+1].fullMove
     }
 
 }

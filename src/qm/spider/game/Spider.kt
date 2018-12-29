@@ -2,8 +2,8 @@ package qm.spider.game
 
 class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
 
-    fun getPossibleMoves(): MutableList<ColumnMove> {
-        val result = mutableListOf<ColumnMove>()
+    fun getPossibleMoves(): MutableList<Move> {
+        val result = mutableListOf<Move>()
         for (fromColumn in 0 until columns.size) {
             var fullMove = true
             for ((candidateCard, candidateIndex) in columns[fromColumn].movableCards()) {
@@ -23,7 +23,7 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
                 fullMove = false
             }
         }
-        result.sortWith(compareBy(ColumnMove::fullMove, ColumnMove::sameSuit, ColumnMove::value))
+        result.sortWith(compareBy(Move::fullMove, Move::sameSuit, Move::value))
         result.reverse()
         return result
     }
@@ -36,8 +36,7 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
                 discards.addAll(fullSuit)
             } else noop()
         }
-        is DealMove -> noop()
-        is NoValidMove -> noop()
+        is DealMove -> deal()
     }
 
     fun undoMove(move: Move) = when(move) {
@@ -51,7 +50,6 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
             moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
         is DealMove -> noop()
-        is NoValidMove -> noop()
     }
 
     fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {
@@ -77,6 +75,10 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
         var result = String()
         for (index in 0 until columns.size) result += ("\n  $index   ${columns[index]}")
         return result
+    }
+
+    fun stackHasMoreCards(): Boolean {
+        return stack.size > 0
     }
 }
 
@@ -176,23 +178,36 @@ class Column() {
 
 data class MoveResult(val cardRevealed: Boolean, val suitRemoved: Boolean)
 
-sealed class Move
+sealed class Move {
+    abstract val sameSuit: Boolean
+    abstract val fullMove: Boolean
+    abstract val value: Int
+    abstract var result: MoveResult
+}
 data class ColumnMove(
     val fromColumn: Int,
     val fromIndex: Int,
     val toColumn: Int,
     val toIndex: Int,
-    val sameSuit: Boolean,
-    val value: Int,
-    val fullMove: Boolean
+    override val sameSuit: Boolean,
+    override val value: Int,
+    override val fullMove: Boolean
 ) : Move() {
-    var result: MoveResult = MoveResult(false, false)
+    override var result: MoveResult = MoveResult(false, false)
     override fun toString(): String {
         return "($fromColumn,$fromIndex -> $toColumn,$toIndex; $sameSuit; ${Value.values()[value]}; $fullMove)"
     }
 }
-object DealMove : Move()
-object NoValidMove : Move()
+
+object DealMove : Move() {
+    override val sameSuit: Boolean
+        get() = false
+    override val fullMove: Boolean
+        get() = false
+    override val value: Int
+        get() = 0
+    override var result = MoveResult(false, false)
+}
 
 object Spider {
     private fun getNewSpiderDeck(): Stack {
