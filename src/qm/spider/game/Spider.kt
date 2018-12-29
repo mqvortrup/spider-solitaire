@@ -29,7 +29,13 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
     }
 
     fun executeMove(move: Move) = when(move) {
-        is ColumnMove -> move.result = moveTo(columns[move.fromColumn], move.fromIndex, columns[move.toColumn])
+        is ColumnMove -> {
+            move.result = moveTo(columns[move.fromColumn], move.fromIndex, columns[move.toColumn])
+            if (move.result.suitRemoved) {
+                val fullSuit = columns[move.toColumn].removeFullSuit()
+                discards.addAll(fullSuit)
+            } else noop()
+        }
         is DealMove -> noop()
         is NoValidMove -> noop()
     }
@@ -38,6 +44,10 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
         is ColumnMove -> {
             if (move.result.cardRevealed)
                 columns[move.fromColumn].hideTopCard()
+            if (move.result.suitRemoved) {
+                val fullSuit = discards.takeLastCount(13)
+                columns[move.toColumn].add(fullSuit)
+            }
             moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
         is DealMove -> noop()
@@ -48,10 +58,6 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
         val toMove = fromColumn.takeLastFrom(fromIndex)
         val revealed = fromColumn.revealTopCard()
         val fullSuitVisible = toColumn.add(toMove)
-        if (fullSuitVisible) {
-            val fullSuit = toColumn.removeFullSuit()
-            discards.addAll(fullSuit)
-        }
         return MoveResult(revealed, fullSuitVisible)
     }
 
@@ -100,13 +106,16 @@ class Column() {
             return false
         else {
             var thisCard = topCardIndex()
-            while (thisCard-1 >= 0 && thisCard-1 >= visibleFrom && stack[thisCard].followedByWithinSuit(stack[thisCard-1])) {
+            while (visibleCardFollowsInSuit(thisCard)) {
                 if (stack[thisCard-1].value == Value.KING) return true
                 thisCard -= 1
             }
             return false
         }
     }
+
+    private fun visibleCardFollowsInSuit(thisCard: Int) =
+        thisCard - 1 >= 0 && thisCard - 1 >= visibleFrom && stack[thisCard].followedByWithinSuit(stack[thisCard - 1])
 
     fun revealTopCard(): Boolean {
         if (visibleFrom == 1) return false
@@ -165,7 +174,7 @@ class Column() {
     }
 }
 
-data class MoveResult(val cardRevealed: Boolean, val suitMoved: Boolean)
+data class MoveResult(val cardRevealed: Boolean, val suitRemoved: Boolean)
 
 sealed class Move
 data class ColumnMove(
