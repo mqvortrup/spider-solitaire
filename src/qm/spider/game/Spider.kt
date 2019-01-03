@@ -49,7 +49,7 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
             }
             moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
-        is DealMove -> noop()
+        is DealMove -> TODO("remember to implement undo of DealMove")
     }
 
     fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {

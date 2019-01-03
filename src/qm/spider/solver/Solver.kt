@@ -17,17 +17,12 @@ class Solver(val game: Game) {
         println(game)
     }
 
-    private fun initializeWithFirstMoves() {
-        moveStack = MoveStack(moveStack, game.getPossibleMoves())
-    }
-
     private fun doMove(): Boolean {
         countMoves ++
         val (restartAt, previous) = moveStack.cycleAt()
         if (restartAt != null) {
             println("cycle detected")
-            previous?.parent = null
-            moveStack = restartAt
+            backtrackTo(restartAt, previous)
             return true
         } else if (moveStack.hasNextMove()) {
             game.executeMove(moveStack.getNextMove())
@@ -42,6 +37,15 @@ class Solver(val game: Game) {
         }
         else
             return false
+    }
+
+    private fun initializeWithFirstMoves() {
+        moveStack = MoveStack(moveStack, game.getPossibleMoves())
+    }
+
+    private fun backtrackTo(restartAt: MoveStack, previous: MoveStack?) {
+        previous?.parent = null
+        moveStack = restartAt
     }
 }
 
