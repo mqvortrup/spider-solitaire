@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 
         val input = readLine()
         if (input != "" && (input?.get(0) == 'D' || input?.get(0) == 'd'))
-            game.deal()
+            game.dealFromStack()
         else if (input != "" && (input?.get(0) == 'U' || input?.get(0) == 'u')) {
             if (lastMove != null) {
                 println("Undoing $lastMove")

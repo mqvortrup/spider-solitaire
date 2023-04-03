@@ -27,8 +27,9 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
                 fullMove = false
             }
         }
-        result.sortWith(compareBy(Move::fullMove, Move::sameSuit, Move::value))
-        result.reverse()
+        result.add(DealMove)
+        //result.sortWith(compareBy(Move::fullMove, Move::sameSuit, Move::value))
+        //result.reverse()
         return result
     }
 
@@ -57,7 +58,7 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
                 discards.addAll(fullSuit)
             } else noop()
         }
-        is DealMove -> deal()
+        is DealMove -> dealFromStack()
     }
 
     fun reverseMove(move: Move) = when(move) {
@@ -70,7 +71,7 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
             }
             moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
-        is DealMove -> TODO("remember to implement undo of DealMove")
+        is DealMove -> reverseDealFromStack()
     }
 
     private fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {
@@ -81,10 +82,16 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
     }
 
 
-    fun deal() {
-        for (index in 0 until columns.size) {
+    fun dealFromStack() {
+        for (column in columns) {
             val card = stack.removeAt(stack.size-1)
-            columns[index].add(listOf(card))
+            column.add(listOf(card))
+        }
+    }
+
+    fun reverseDealFromStack() {
+        for (column in columns.reversed()) {
+            stack.add(column.takeTopCard())
         }
     }
 
@@ -105,7 +112,7 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
 
 data class MoveResult(val cardRevealed: Boolean, val suitRemoved: Boolean)
 
-sealed class Move: qm.spider.solver2.BaseMove {
+sealed class Move: BaseMove {
     abstract val sameSuit: Boolean
     abstract val fullMove: Boolean
     abstract val value: Int
@@ -147,7 +154,7 @@ object Spider {
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
-        deck.shuffle()
+        //deck.shuffle()
         return deck
     }
 

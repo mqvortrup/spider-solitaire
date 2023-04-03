@@ -94,4 +94,8 @@ class Column() {
     }
 
     fun isCleared() = stack.isEmpty()
+
+    fun takeTopCard(): Card {
+        return stack.takeLast()
+    }
 }
