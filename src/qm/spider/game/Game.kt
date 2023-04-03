@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
         else if (input != "" && (input?.get(0) == 'U' || input?.get(0) == 'u')) {
             if (lastMove != null) {
                 println("Undoing $lastMove")
-                game.undoMove(lastMove)
+                game.reverseMove(lastMove)
             } else
                 println("nothing to undo")
         }

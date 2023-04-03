@@ -92,4 +92,6 @@ class Column() {
     fun takeLastFrom(fromIndex: Int): List<Card> {
         return stack.takeLastFrom(fromIndex)
     }
+
+    fun isCleared() = stack.isEmpty()
 }
