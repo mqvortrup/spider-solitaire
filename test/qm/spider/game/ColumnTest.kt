@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-
+import qm.spider.cards.*
 
 
 internal class ColumnTest {
@@ -25,7 +25,8 @@ internal class ColumnTest {
                 RealCard(Suit.HEARTS, Value.KING), RealCard(Suit.HEARTS, Value.QUEEN), RealCard(Suit.HEARTS, Value.JACK),
                 RealCard(Suit.HEARTS, Value.TEN), RealCard(Suit.HEARTS, Value.NINE), RealCard(Suit.HEARTS, Value.EIGHT),
                 RealCard(Suit.HEARTS, Value.SEVEN), RealCard(Suit.HEARTS, Value.SIX), RealCard(Suit.HEARTS, Value.FIVE),
-                RealCard(Suit.HEARTS, Value.FOUR), RealCard(Suit.HEARTS, Value.THREE), RealCard(Suit.HEARTS, Value.TWO)))
+                RealCard(Suit.HEARTS, Value.FOUR), RealCard(Suit.HEARTS, Value.THREE), RealCard(Suit.HEARTS, Value.TWO)
+        ))
     }
 
     @Test
@@ -64,7 +65,7 @@ internal class ColumnTest {
     fun completingAFullSuit() {
         val fullSuit = columnWithAlmostFullSuit.add(listOf(RealCard(Suit.HEARTS, Value.ACE)))
         assertTrue(fullSuit)
-        if (fullSuit) columnWithAlmostFullSuit.removeFullSuit()
+        if (fullSuit) columnWithAlmostFullSuit.removeFullSuitWithReveal()
         assertEquals(0, columnWithAlmostFullSuit.topCardIndex())
     }
 }

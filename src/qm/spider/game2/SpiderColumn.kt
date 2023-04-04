@@ -1,12 +1,12 @@
-package qm.spider.game
+package qm.spider.game2
 
 import qm.spider.cards.*
 
-class Column() {
-    private val stack = mutableListOf<Card>()
+class SpiderColumn() {
+    private val stack = mutableListOf<Card>(EmptyCard)
     private var visibleFrom: Int = topCardIndex()
 
-    fun deal(cards: List<Card>): Column {
+    fun deal(cards: List<Card>): SpiderColumn {
         stack.addAll(cards)
         visibleFrom = topCardIndex()
         return this
@@ -15,12 +15,6 @@ class Column() {
     fun add(cards: List<Card>): Boolean {
         stack.addAll(cards)
         return isFullSuitVisible()
-    }
-
-    fun removeFullSuitWithReveal(): Stack {
-        val suit = stack.takeLastCount(13)
-        revealTopCard()
-        return suit
     }
 
     fun isFullSuitVisible(): Boolean {
@@ -56,15 +50,7 @@ class Column() {
             else
                 result += (stack[index].toString() + " ")
         }
-        return result + ", $visibleFrom"
-    }
-
-    fun movableCards(): MutableList<Pair<Card, Int>> {
-        val result = mutableListOf<Pair<Card, Int>>()
-        if (stack.size > 1)
-            for (index in longestSuit())
-                result.add(Pair(stack[index], index))
-        return result
+        return "$result, $visibleFrom"
     }
 
     private fun longestSuit(): IntRange {
@@ -75,7 +61,7 @@ class Column() {
         return IntRange(begin, end)
     }
 
-    fun topCardIndex() = stack.size - 1
+    private fun topCardIndex() = stack.size - 1
 
     fun canAccept(candidateCard: Card): Boolean {
         return candidateCard.followedByOutsideSuit(topCard())
@@ -83,19 +69,11 @@ class Column() {
 
     fun topCard() = stack.last()
 
-    fun nextFree(): Int {
-        return stack.size
-    }
-
     fun hideTopCard() {
         visibleFrom += 1
     }
 
-    fun takeLastFrom(fromIndex: Int): List<Card> {
-        return stack.takeLastFrom(fromIndex)
-    }
-
-    fun isCleared() = stack.isEmpty()
+    fun isCleared() = topCard() == EmptyCard
 
     fun takeTopCard(): Card {
         return stack.takeLast()
@@ -107,5 +85,30 @@ class Column() {
 
     fun removeTop(count: Int): List<Card> {
         return stack.takeLastCount(count)
+    }
+
+    fun streak(): List<Card> {
+        return if (! isCleared()) {
+            val streakRange = longestSuit()
+            stack.subList(streakRange.first, streakRange.last + 1)
+        } else emptyList()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SpiderColumn
+
+        if (stack != other.stack) return false
+        if (visibleFrom != other.visibleFrom) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = stack.hashCode()
+        result = 31 * result + visibleFrom
+        return result
     }
 }

@@ -6,10 +6,6 @@ abstract class BaseGame {
 
     abstract fun isSolved() : Boolean
 
-    abstract fun doMove(move: BaseMove)
-
-    abstract fun undoMove(move: BaseMove)
-
     abstract fun state(): GameState
 }
 
@@ -18,5 +14,9 @@ interface GameState {
 }
 
 interface BaseMove {
+
+    fun performMove()
+
+    fun undoMove()
 
 }

@@ -28,14 +28,14 @@ class RecursiveSolver(private val game: BaseGame) {
     }
 
     private fun undoMove() {
-        game.undoMove(solution.pop())
+        solution.pop().undoMove()
     }
 
     private fun doMove(move: BaseMove, game: BaseGame) {
         solution.push(move)
         movesTested++
         println("Solution ${solution}")
-        game.doMove(move)
+        move.performMove()
     }
 
     fun findSolution() : List<BaseMove> {

@@ -1,12 +1,13 @@
 package qm.spider.game
 
+import qm.spider.cards.*
 import qm.spider.solver2.BaseGame
 import qm.spider.solver2.BaseMove
 import qm.spider.solver2.GameState
 
-class Game(private val columns: List<Column>, val stack: Stack, private val discards: Stack): BaseGame() {
+class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
 
-    override fun getPossibleMoves(): MutableList<Move> {
+    fun getPossibleMoves(): MutableList<Move> {
         val result = mutableListOf<Move>()
         for (fromColumn in columns.indices) {
             var fullMove = true
@@ -33,28 +34,12 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
         return result
     }
 
-    override fun isSolved() = columns.all { column -> column.isCleared() }
-
-    override fun state() =
-        SpiderState(
-            columns.foldIndexed(0L) { index, total, column ->
-                total + index*column.hashCode()
-            }
-        )
-
-    override fun doMove(move: BaseMove) {
-        executeMove(move as Move)
-    }
-
-    override fun undoMove(move: BaseMove) {
-        reverseMove(move as Move)
-    }
 
     fun executeMove(move: Move) = when(move) {
         is ColumnMove -> {
             move.result = moveTo(columns[move.fromColumn], move.fromIndex, columns[move.toColumn])
             if (move.result.suitRemoved) {
-                val fullSuit = columns[move.toColumn].removeFullSuit()
+                val fullSuit = columns[move.toColumn].removeFullSuitWithReveal()
                 discards.addAll(fullSuit)
             } else noop()
         }
@@ -108,11 +93,16 @@ class Game(private val columns: List<Column>, val stack: Stack, private val disc
     fun stackHasMoreCards(): Boolean {
         return stack.size > 0
     }
+
+    fun moveCards(from: Column, to: Column, count: Int) {
+        val toMove = from.removeTop(count)
+        to.add(toMove)
+    }
 }
 
 data class MoveResult(val cardRevealed: Boolean, val suitRemoved: Boolean)
 
-sealed class Move: BaseMove {
+sealed class Move {
     abstract val sameSuit: Boolean
     abstract val fullMove: Boolean
     abstract val value: Int
