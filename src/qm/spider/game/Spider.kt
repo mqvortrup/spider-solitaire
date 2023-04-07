@@ -1,8 +1,6 @@
 package qm.spider.game
 
 import qm.spider.cards.*
-import qm.spider.solver2.BaseGame
-import qm.spider.solver2.BaseMove
 import qm.spider.solver2.GameState
 
 class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {

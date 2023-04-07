@@ -1,6 +1,9 @@
 package qm.spider.game2
 
-import qm.spider.cards.*
+import qm.spider.cards.Decks
+import qm.spider.cards.Stack
+import qm.spider.cards.Suit
+import qm.spider.cards.takeLastCount
 import qm.spider.solver2.*
 
 class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards: Stack): BaseGame() {
@@ -17,7 +20,7 @@ class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards
                 }
             }
         }
-        result.add(DealMove(this))
+        if (stack.isNotEmpty()) result.add(DealMove(this))
         return result
     }
     override fun isSolved() = columns.all { column -> column.isCleared() }
@@ -32,7 +35,7 @@ class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards
     fun dealFromStack() {
         for (column in columns) {
             val card = stack.removeAt(stack.size-1)
-            column.add(listOf(card))
+            column.addVisible(listOf(card))
         }
     }
 
@@ -49,13 +52,13 @@ class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards
     }
 
     fun moveCards(from: SpiderColumn, to: SpiderColumn, count: Int) {
-        val toMove = from.removeTop(count)
-        to.add(toMove)
+        val toMove = from.removeTop(count).reversed()
+        to.addVisible(toMove)
     }
 }
 
 object SpiderSolitaire {
-    private fun getNewSpiderDeck(): Stack {
+    private fun getNewSpiderDeck(shuffle : Boolean = true): Stack {
         val deck = Decks.getFullSuit(Suit.HEARTS)
         deck.addAll(Decks.getFullSuit(Suit.HEARTS))
         deck.addAll(Decks.getFullSuit(Suit.HEARTS))
@@ -64,18 +67,19 @@ object SpiderSolitaire {
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
-        //deck.shuffle()
+        if (shuffle) deck.shuffle()
         return deck
     }
 
     private fun initiallyFillColumn(count: Int, fromStack: Stack): SpiderColumn {
         val column = SpiderColumn()
-        column.deal(fromStack.takeLastCount(count))
+        column.dealHidden(fromStack.takeLastCount(count))
+        column.revealTopCard()
         return column
     }
 
-    fun dealNewGame(): SpiderGame {
-        val deck = getNewSpiderDeck()
+    fun dealNewGame(shuffle : Boolean = true): SpiderGame {
+        val deck = getNewSpiderDeck(shuffle)
         val columns = List(10) { index: Int ->
             if (index < 4) {
                 initiallyFillColumn(6, deck)

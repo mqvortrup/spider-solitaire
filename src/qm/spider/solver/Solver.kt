@@ -1,6 +1,9 @@
 package qm.spider.solver
 
-import qm.spider.game.*
+import qm.spider.game.DealMove
+import qm.spider.game.Game
+import qm.spider.game.Move
+import qm.spider.game.Spider
 
 class Solver(val game: Game) {
 

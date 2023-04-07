@@ -4,59 +4,46 @@ import qm.spider.cards.*
 
 class SpiderColumn() {
     private val stack = mutableListOf<Card>(EmptyCard)
-    private var visibleFrom: Int = topCardIndex()
 
-    fun deal(cards: List<Card>): SpiderColumn {
+    fun dealHidden(cards: List<Card>) {
+        cards.forEach { card -> card.visible = false }
         stack.addAll(cards)
-        visibleFrom = topCardIndex()
-        return this
     }
 
-    fun add(cards: List<Card>): Boolean {
+    fun addVisible(cards: List<Card>) {
+        cards.forEach { card -> card.visible = true }
         stack.addAll(cards)
-        return isFullSuitVisible()
     }
 
     fun isFullSuitVisible(): Boolean {
-        if (topCard().value != Value.ACE)
-            return false
-        else {
-            var thisCard = topCardIndex()
-            while (visibleCardFollowsInSuit(thisCard)) {
-                if (stack[thisCard-1].value == Value.KING) return true
-                thisCard -= 1
-            }
-            return false
+        val candidateSuit = stack.reversed().filter { card -> card.visible }
+        if (candidateSuit.size < 13) return false
+        if (candidateSuit.first().value != Value.ACE) return false
+        for (index in 1..12) {
+            if (! candidateSuit[index-1].followedByWithinSuit(candidateSuit[index])) return false
         }
+        return true
     }
 
-    private fun visibleCardFollowsInSuit(thisCard: Int) =
-        thisCard - 1 >= 0 && thisCard - 1 >= visibleFrom && stack[thisCard].followedByWithinSuit(stack[thisCard - 1])
-
-    fun revealTopCard(): Boolean {
-        if (visibleFrom == 1) return false
-        if (visibleFrom >= stack.size) {
-            visibleFrom = topCardIndex()
-            return true
-        } else
-            return false
+    fun revealTopCard() {
+        stack[topCardIndex()].visible = true
     }
 
     override fun toString(): String {
         var result = String()
         for (index in 1 until stack.size) {
-            if (index < visibleFrom)
-                result += "X "
+            result += if (stack[index].visible)
+                (stack[index].toString() + " ")
             else
-                result += (stack[index].toString() + " ")
+                "X "
         }
-        return "$result, $visibleFrom"
+        return result
     }
 
     private fun longestSuit(): IntRange {
         val end = topCardIndex()
         var begin = end
-        while (begin-1 >= visibleFrom && stack[begin].followedByWithinSuit(stack[begin-1]))
+        while (stack[begin-1] != EmptyCard && stack[begin-1].visible && stack[begin].followedByWithinSuit(stack[begin-1]))
             begin -= 1
         return IntRange(begin, end)
     }
@@ -67,10 +54,20 @@ class SpiderColumn() {
         return candidateCard.followedByOutsideSuit(topCard())
     }
 
-    fun topCard() = stack.last()
+    fun topCard(): Card {//= stack.last()
+        return nthCard(0)
+    }
+
+    fun bottomCard(): Card {
+        return stack[1]
+    }
+
+    fun nthCard(i: Int): Card {
+        return stack[stack.size - 1 - i]
+    }
 
     fun hideTopCard() {
-        visibleFrom += 1
+        stack[topCardIndex()].visible = false
     }
 
     fun isCleared() = topCard() == EmptyCard
@@ -80,7 +77,7 @@ class SpiderColumn() {
     }
 
     fun isTopCardVisible(): Boolean {
-        return visibleFrom <= topCardIndex()
+        return stack[topCardIndex()].visible
     }
 
     fun removeTop(count: Int): List<Card> {
@@ -100,15 +97,11 @@ class SpiderColumn() {
 
         other as SpiderColumn
 
-        if (stack != other.stack) return false
-        if (visibleFrom != other.visibleFrom) return false
-
-        return true
+        return stack.zip(other.stack).all {pair -> pair.first == pair.second }
     }
 
     override fun hashCode(): Int {
-        var result = stack.hashCode()
-        result = 31 * result + visibleFrom
-        return result
+        stack.fold(0) {hash, card -> hash + card.hashCode() }
+        return stack.hashCode()
     }
 }

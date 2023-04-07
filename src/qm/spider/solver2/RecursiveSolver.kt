@@ -8,15 +8,16 @@ class RecursiveSolver(private val game: BaseGame) {
     var movesTested = 0
 
     private fun hasSolution(game: BaseGame) : Boolean {
-        println(game)
+        //println(game)
         if (game.isSolved()) return true
         val moves = game.getPossibleMoves()
-        println("possible moves: ${moves}")
+        //println("possible moves: ${moves}")
         if (moves.isEmpty()) return false
+        println("moves tested: $movesTested, solution size: ${solution.size}")
         moves.forEach { move ->
             doMove(move, game)
             if (allStates.contains(game.state())) {
-                println("been there")
+                //println("been there")
                 undoMove()
             } else {
                 allStates.add(game.state())
@@ -34,7 +35,7 @@ class RecursiveSolver(private val game: BaseGame) {
     private fun doMove(move: BaseMove, game: BaseGame) {
         solution.push(move)
         movesTested++
-        println("Solution ${solution}")
+        //println("Solution ${solution}")
         move.performMove()
     }
 

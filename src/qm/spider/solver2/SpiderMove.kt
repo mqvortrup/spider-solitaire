@@ -1,7 +1,7 @@
 package qm.spider.solver2
 
-import qm.spider.game2.SpiderColumn
 import qm.spider.cards.takeLastCount
+import qm.spider.game2.SpiderColumn
 import qm.spider.game2.SpiderGame
 
 abstract class SpiderMove: BaseMove, Action {
@@ -96,7 +96,7 @@ class RemoveFullSuitAction(private val game: SpiderGame, private val column: Spi
 
     override fun undo() {
         val fullSuit = game.discards.takeLastCount(13)
-        column.add(fullSuit)
+        column.addVisible(fullSuit)
     }
 }
 
