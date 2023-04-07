@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ca06303-618b-4431-9c96-20c52659d03b" name="Changes" comment="Reimplementing SpiderGame in new version">
-      <change afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/qm/spider/game2/SpiderColumnTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/qm/spider/game2/SpiderGameTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider-solitaire.iml" beforeDir="false" afterPath="$PROJECT_DIR$/spider-solitaire.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/qm/spider/game/Spider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/game/Spider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/qm/spider/game2/SpiderColumn.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/game2/SpiderColumn.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/qm/spider/game2/SpiderGame.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/game2/SpiderGame.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/qm/spider/solver/Solver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/solver/Solver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/qm/spider/game/ColumnTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/qm/spider/game/ColumnTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/qm/spider/game/RealCardTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/qm/spider/game/RealCardTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,33 +45,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/Users/qm/IdeaProjects/spider-solitaire/src/qm/spider/game2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.28446603",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/qm/IdeaProjects/spider-solitaire/src/qm/spider/game2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.28446603&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/qm/spider/game2" />
@@ -166,7 +157,7 @@
       <option name="MAIN_CLASS_NAME" value="qm.spider.solver2.MainKt" />
       <module name="spider-solitaire" />
       <shortenClasspath name="NONE" />
-      <option name="VM_PARAMETERS" value="-Xss1G" />
+      <option name="VM_PARAMETERS" value="-Xss1G -Xmx16G" />
       <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
         <option name="credential" />
         <option name="region" />
@@ -247,15 +238,15 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt</url>
+          <line>89</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
-        <line-breakpoint type="kotlin-line">
+        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt</url>
           <line>17</line>
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.util.NoSuchElementException" package="java.util" />
@@ -266,5 +257,10 @@
         <breakpoint enabled="true" type="java-exception" />
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JetRunConfigurationType">
+        <watch expression="((SpiderGame)game).discards" custom="qm.spider.game2.SpiderGame" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

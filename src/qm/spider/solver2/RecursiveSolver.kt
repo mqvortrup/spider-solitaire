@@ -15,7 +15,7 @@ class RecursiveSolver(private val game: BaseGame) {
         if (moves.isEmpty()) return false
         println("moves tested: $movesTested, solution size: ${solution.size}")
         moves.forEach { move ->
-            doMove(move, game)
+            doMove(move)
             if (allStates.contains(game.state())) {
                 //println("been there")
                 undoMove()
@@ -32,7 +32,7 @@ class RecursiveSolver(private val game: BaseGame) {
         solution.pop().undoMove()
     }
 
-    private fun doMove(move: BaseMove, game: BaseGame) {
+    private fun doMove(move: BaseMove) {
         solution.push(move)
         movesTested++
         //println("Solution ${solution}")

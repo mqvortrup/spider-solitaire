@@ -12,14 +12,24 @@ class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards
         val result = mutableListOf<BaseMove>()
         columns.forEach { from ->
             val streak = from.streak()
-            for (cardIndex in streak.indices) {
-                columns.filter { it != from }.forEach { to ->
+            columns.filterNot { it === from }.forEach { to ->
+                for (cardIndex in streak.indices) {
                     if (to.canAccept(streak[cardIndex])) {
-                        result.add(CardMove(this, from, to, streak.size - cardIndex))
+                        result.add(
+                            CardMove(this, from, to,
+                                to.topCard().isSameSuit(streak[cardIndex]),
+                                cardIndex == 0,
+                                streak.size - cardIndex))
                     }
                 }
             }
         }
+        result.sortWith(compareBy (
+            { (it as CardMove).sameSuit},
+            { (it as CardMove).fullStreak},
+            { (it as CardMove).count }
+        ))
+        result.reverse()
         if (stack.isNotEmpty()) result.add(DealMove(this))
         return result
     }
@@ -54,6 +64,10 @@ class SpiderGame(val columns: List<SpiderColumn>, val stack: Stack, val discards
     fun moveCards(from: SpiderColumn, to: SpiderColumn, count: Int) {
         val toMove = from.removeTop(count).reversed()
         to.addVisible(toMove)
+    }
+
+    fun columnIndex(column: SpiderColumn): Int {
+        return columns.indexOf(column)
     }
 }
 

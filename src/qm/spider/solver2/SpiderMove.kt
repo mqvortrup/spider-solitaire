@@ -6,6 +6,7 @@ import qm.spider.game2.SpiderGame
 
 abstract class SpiderMove: BaseMove, Action {
     private val consequences = mutableListOf<Action>()
+    protected var discardSuit = false
 
     override fun performMove() {
         perform()
@@ -34,6 +35,7 @@ abstract class SpiderMove: BaseMove, Action {
     protected fun checkForFullSuit(game: SpiderGame, column: SpiderColumn): List<Action> {
         var result = mutableListOf<Action>()
         if (column.isFullSuitVisible()) {
+            discardSuit = true
             val removeFullSuit = RemoveFullSuitAction(game, column)
             removeFullSuit.perform()
             result.add(removeFullSuit)
@@ -43,7 +45,12 @@ abstract class SpiderMove: BaseMove, Action {
     }
 }
 
-class CardMove(private val game: SpiderGame, private val from: SpiderColumn, private val to: SpiderColumn, private val count: Int): SpiderMove() {
+class CardMove(val game: SpiderGame, val from: SpiderColumn, val to: SpiderColumn, val sameSuit: Boolean, val fullStreak: Boolean, val count: Int): SpiderMove() {
+    private val receivingCard = to.topCard()
+    private val movedCard = from.nthCard(count-1)
+    private val fromIndex = game.columnIndex(from)
+    private val toIndex = game.columnIndex(to)
+
     override fun collectConsequences(): List<Action> {
         var result = mutableListOf<Action>()
         result.addAll(checkForFullSuit(game, to))
@@ -58,9 +65,15 @@ class CardMove(private val game: SpiderGame, private val from: SpiderColumn, pri
     override fun undo() {
         game.moveCards(to, from, count)
     }
+
+    override fun toString(): String {
+        return "CardMove(fromIndex=$fromIndex, toIndex=$toIndex, movedCard=$movedCard, receivingCard=$receivingCard, count=$count, sameSuit=$sameSuit, fullStreak=$fullStreak, discardSuit=$discardSuit)"
+    }
 }
 
 class DealMove(private val game: SpiderGame): SpiderMove() {
+    private val cardsLeft = game.stack.size
+
     override fun collectConsequences() : List<Action> {
         var result = mutableListOf<Action>()
         game.columns.forEach {column ->
@@ -75,6 +88,10 @@ class DealMove(private val game: SpiderGame): SpiderMove() {
 
     override fun undo() {
         game.reverseDealFromStack()
+    }
+
+    override fun toString(): String {
+        return "DealMove(cardsLeft=$cardsLeft, discardSuit=$discardSuit)"
     }
 }
 
