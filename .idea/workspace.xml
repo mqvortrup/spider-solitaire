@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2ca06303-618b-4431-9c96-20c52659d03b" name="Changes" comment="Reimplementing SpiderGame in new version">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qm/spider/game2/SpiderGame.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/game2/SpiderGame.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="7wh02vz4" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Nmdr0wElCEtoNtdemlt3byNsxC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/qm/IdeaProjects/spider-solitaire/src/qm/spider/game2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.28446603&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/qm/spider/game2" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/qm/spider/cards" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="qm.spider.game2" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="qm.spider.game2" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.MainKt">
+    <configuration name="SpiderColumnTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spider-solitaire" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="qm.spider.game2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="qm.spider.game2" />
+      <option name="MAIN_CLASS_NAME" value="qm.spider.game2.SpiderColumnTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpiderColumnTest.correctSequenceMaintained" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spider-solitaire" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="qm.spider.game2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="qm.spider.game2" />
+      <option name="MAIN_CLASS_NAME" value="qm.spider.game2.SpiderColumnTest" />
+      <option name="METHOD_NAME" value="correctSequenceMaintained" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpiderColumnTest.correctSequenceOnAdding" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spider-solitaire" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="qm.spider.game2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="qm.spider.game2" />
+      <option name="MAIN_CLASS_NAME" value="qm.spider.game2.SpiderColumnTest" />
+      <option name="METHOD_NAME" value="correctSequenceOnAdding" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpiderColumnTest.correctSequenceOnRemovingAndAddingBack" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spider-solitaire" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="qm.spider.game2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="qm.spider.game2" />
+      <option name="MAIN_CLASS_NAME" value="qm.spider.game2.SpiderColumnTest" />
+      <option name="METHOD_NAME" value="correctSequenceOnRemovingAndAddingBack" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="qm.spider.solver2.MainKt" />
+      <module name="spider-solitaire" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Xss1G -Xmx16G" />
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.SpiderColumnTest" />
+      <item itemvalue="JUnit.SpiderColumnTest.correctSequenceMaintained" />
+      <item itemvalue="JUnit.SpiderColumnTest.correctSequenceOnAdding" />
+      <item itemvalue="JUnit.SpiderColumnTest.correctSequenceOnRemovingAndAddingBack" />
+      <item itemvalue="Kotlin.MainKt" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.MainKt" />
+        <item itemvalue="JUnit.SpiderColumnTest" />
+        <item itemvalue="JUnit.SpiderColumnTest.correctSequenceOnAdding" />
+        <item itemvalue="JUnit.SpiderColumnTest.correctSequenceOnRemovingAndAddingBack" />
+        <item itemvalue="JUnit.SpiderColumnTest.correctSequenceMaintained" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ca06303-618b-4431-9c96-20c52659d03b" name="Changes" comment="" />
+      <created>1680273386686</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1680273386686</updated>
+      <workItem from="1680273387878" duration="30905000" />
+      <workItem from="1680677712995" duration="17290000" />
+    </task>
+    <task id="LOCAL-00001" summary="Put state check in right place. Implemented reverserDealFromStack">
+      <created>1680538144062</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1680538144062</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Reimplementing SpiderGame in new version">
+      <created>1680629882358</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680629882358</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Put state check in right place. Implemented reverserDealFromStack" />
+    <MESSAGE value="Reimplementing SpiderGame in new version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reimplementing SpiderGame in new version" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/qm/spider/solver2/SpiderMove.kt</url>
+          <line>89</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/qm/spider/solver2/RecursiveSolver.kt</url>
+          <line>17</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.NoSuchElementException" package="java.util" />
+          <option name="timeStamp" value="11" />
+        </breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="java-exception" />
+      </default-breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JetRunConfigurationType">
+        <watch expression="((SpiderGame)game).discards" custom="qm.spider.game2.SpiderGame" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

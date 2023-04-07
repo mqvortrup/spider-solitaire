@@ -1,16 +1,17 @@
-package qm.spider.game
+package qm.spider.cards
 
 typealias Stack = MutableList<Card>
 
 abstract class Card {
     abstract val suit: Suit
     abstract val value: Value
+    abstract var visible: Boolean
     abstract fun followedByOutsideSuit(otherCard: Card): Boolean
     abstract fun followedByWithinSuit(otherCard: Card): Boolean
     abstract fun isSameSuit(otherCard: Card): Boolean
 }
 
-data class RealCard(override val suit: Suit, override val value: Value) : Card() {
+data class RealCard(override val suit: Suit, override val value: Value, override var visible: Boolean = false) : Card() {
     override fun followedByOutsideSuit(otherCard: Card): Boolean {
         if (otherCard is EmptyCard) return true
         return otherCard is RealCard && this.value.isFollowedBy(otherCard.value)
@@ -33,6 +34,7 @@ data class RealCard(override val suit: Suit, override val value: Value) : Card()
 object EmptyCard : Card() {
     override val suit = Suit.ANY
     override val value = Value.ANY
+    override var visible = false
 
     override fun followedByWithinSuit(otherCard: Card) = true
 
@@ -59,7 +61,21 @@ enum class Value {
     }
 }
 
-fun Value.range() = arrayOf(Value.ACE, Value.TWO, Value.THREE, Value.FOUR, Value.FIVE, Value.SIX, Value.SEVEN, Value.EIGHT, Value.NINE, Value.TEN, Value.JACK, Value.QUEEN, Value.KING)
+fun Value.range() = arrayOf(
+    Value.ACE,
+    Value.TWO,
+    Value.THREE,
+    Value.FOUR,
+    Value.FIVE,
+    Value.SIX,
+    Value.SEVEN,
+    Value.EIGHT,
+    Value.NINE,
+    Value.TEN,
+    Value.JACK,
+    Value.QUEEN,
+    Value.KING
+)
 
 enum class Suit {
     ANY{
@@ -94,7 +110,7 @@ object Decks {
     }
 }
 
-fun Stack.takeLast():Card {
+fun Stack.takeLast(): Card {
     return this.removeAt(this.size-1)
 }
 

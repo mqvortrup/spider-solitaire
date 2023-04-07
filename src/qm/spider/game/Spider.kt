@@ -1,13 +1,16 @@
 package qm.spider.game
 
+import qm.spider.cards.*
+import qm.spider.solver2.GameState
+
 class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
 
     fun getPossibleMoves(): MutableList<Move> {
         val result = mutableListOf<Move>()
-        for (fromColumn in 0 until columns.size) {
+        for (fromColumn in columns.indices) {
             var fullMove = true
             for ((candidateCard, candidateIndex) in columns[fromColumn].movableCards()) {
-                for (toColumn in 0 until columns.size) {
+                for (toColumn in columns.indices) {
                     if (toColumn != fromColumn) {
                         if (columns[toColumn].canAccept(candidateCard)) {
                             result.add(
@@ -23,23 +26,25 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
                 fullMove = false
             }
         }
-        result.sortWith(compareBy(Move::fullMove, Move::sameSuit, Move::value))
-        result.reverse()
+        result.add(DealMove)
+        //result.sortWith(compareBy(Move::fullMove, Move::sameSuit, Move::value))
+        //result.reverse()
         return result
     }
+
 
     fun executeMove(move: Move) = when(move) {
         is ColumnMove -> {
             move.result = moveTo(columns[move.fromColumn], move.fromIndex, columns[move.toColumn])
             if (move.result.suitRemoved) {
-                val fullSuit = columns[move.toColumn].removeFullSuit()
+                val fullSuit = columns[move.toColumn].removeFullSuitWithReveal()
                 discards.addAll(fullSuit)
             } else noop()
         }
-        is DealMove -> deal()
+        is DealMove -> dealFromStack()
     }
 
-    fun undoMove(move: Move) = when(move) {
+    fun reverseMove(move: Move) = when(move) {
         is ColumnMove -> {
             if (move.result.cardRevealed)
                 columns[move.fromColumn].hideTopCard()
@@ -49,10 +54,10 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
             }
             moveTo(columns[move.toColumn], move.toIndex, columns[move.fromColumn])
         }
-        is DealMove -> TODO("remember to implement undo of DealMove")
+        is DealMove -> reverseDealFromStack()
     }
 
-    fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {
+    private fun moveTo(fromColumn: Column, fromIndex: Int, toColumn: Column): MoveResult {
         val toMove = fromColumn.takeLastFrom(fromIndex)
         val revealed = fromColumn.revealTopCard()
         val fullSuitVisible = toColumn.add(toMove)
@@ -60,10 +65,16 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
     }
 
 
-    fun deal() {
-        for (index in 0 until columns.size) {
+    fun dealFromStack() {
+        for (column in columns) {
             val card = stack.removeAt(stack.size-1)
-            columns[index].add(listOf(card))
+            column.add(listOf(card))
+        }
+    }
+
+    fun reverseDealFromStack() {
+        for (column in columns.reversed()) {
+            stack.add(column.takeTopCard())
         }
     }
 
@@ -79,6 +90,11 @@ class Game(val columns: List<Column>, val stack: Stack, val discards: Stack) {
 
     fun stackHasMoreCards(): Boolean {
         return stack.size > 0
+    }
+
+    fun moveCards(from: Column, to: Column, count: Int) {
+        val toMove = from.removeTop(count)
+        to.add(toMove)
     }
 }
 
@@ -126,7 +142,7 @@ object Spider {
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
         deck.addAll(Decks.getFullSuit(Suit.CLUBS))
-        deck.shuffle()
+        //deck.shuffle()
         return deck
     }
 
@@ -149,3 +165,5 @@ object Spider {
         return Game(columns, deck, mutableListOf())
     }
 }
+
+data class SpiderState(val hash: Long) : GameState

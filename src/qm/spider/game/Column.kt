@@ -1,5 +1,7 @@
 package qm.spider.game
 
+import qm.spider.cards.*
+
 class Column() {
     private val stack = mutableListOf<Card>()
     private var visibleFrom: Int = topCardIndex()
@@ -15,13 +17,13 @@ class Column() {
         return isFullSuitVisible()
     }
 
-    fun removeFullSuit(): Stack {
+    fun removeFullSuitWithReveal(): Stack {
         val suit = stack.takeLastCount(13)
         revealTopCard()
         return suit
     }
 
-    private fun isFullSuitVisible(): Boolean {
+    fun isFullSuitVisible(): Boolean {
         if (topCard().value != Value.ACE)
             return false
         else {
@@ -91,5 +93,19 @@ class Column() {
 
     fun takeLastFrom(fromIndex: Int): List<Card> {
         return stack.takeLastFrom(fromIndex)
+    }
+
+    fun isCleared() = stack.isEmpty()
+
+    fun takeTopCard(): Card {
+        return stack.takeLast()
+    }
+
+    fun isTopCardVisible(): Boolean {
+        return visibleFrom <= topCardIndex()
+    }
+
+    fun removeTop(count: Int): List<Card> {
+        return stack.takeLastCount(count)
     }
 }
